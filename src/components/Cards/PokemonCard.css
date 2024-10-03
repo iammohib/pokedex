@@ -1,0 +1,16 @@
+.PokemonCard {
+  width: 300px;
+  background-color: antiquewhite;
+  margin: 5px;
+}
+.pokemon-img {
+  /* width: 90%; */
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+img {
+  max-width: 90%;
+  max-height: 90%;
+}

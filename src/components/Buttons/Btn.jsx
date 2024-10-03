@@ -1,0 +1,37 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import './Btn.css'; // Import any styling you want
+
+function Btn({
+    children,
+    onClick,
+    type = 'button',
+    variant = 'primary',
+    size = 'medium',
+    disabled = false,
+    className = ''
+}) {
+    return (
+        <button
+            className={`btn ${variant} ${size} ${className}`}
+            onClick={onClick}
+            type={type}
+            disabled={disabled}
+        >
+            {children}
+        </button>
+    );
+};
+
+// Define prop types for better validation
+Btn.propTypes = {
+    children: PropTypes.node.isRequired, // Text or content inside button
+    onClick: PropTypes.func, // Function triggered on click
+    type: PropTypes.oneOf(['button', 'submit', 'reset']), // Button type
+    variant: PropTypes.oneOf(['primary', 'secondary', 'success', 'danger', 'warning']), // Button style type
+    size: PropTypes.oneOf(['small', 'medium', 'large']), // Button size
+    disabled: PropTypes.bool, // Whether the button is disabled
+    className: PropTypes.string, // Custom CSS class if needed
+};
+
+export default Btn;
