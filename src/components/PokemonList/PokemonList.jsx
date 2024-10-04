@@ -7,7 +7,7 @@ import Btn from '../Buttons/Btn';
 
 function PokemonList() {
   // State variables for API URL, Pokémon data, and navigation controls
-  const [pokeapiUrl, setPokeapiUrl] = useState('https://pokeapi.co/api/v2/pokemon/?offset=190&limit=20')
+  const [pokeapiUrl, setPokeapiUrl] = useState('https://pokeapi.co/api/v2/pokemon/')
   const [pokemonDataList, setPokemonDataList] = useState([])
   const [count, setCount] = useState(0);
   const [prevApiUrl, setPrevApiUrl] = useState('');
@@ -27,7 +27,7 @@ function PokemonList() {
     const offset = params.get('offset');
 
     // Return the offset value as a number (or null if not found)
-    return offset ? Number(offset) : "none";
+    return offset ? Number(offset) : 0;
   }
 
   // Function to fetch Pokémon data from the API
@@ -46,6 +46,7 @@ function PokemonList() {
     // Make individual requests to get detailed data for each Pokémon
     const pokeapiResultPromise = pokeapiResult.map(async (e) => await axios.get(e.url))
     const pokeapiData = await axios.all(pokeapiResultPromise)
+    console.log(pokeapiData)
 
     // Map the API response to extract only the required Pokémon details
     const pokeapiDataList = pokeapiData.map((e) => {
@@ -55,12 +56,13 @@ function PokemonList() {
         name: pokemonData.name,
         image: pokemonData.sprites.other.dream_world.front_default,
         types: pokemonData.types,
+        cries: pokemonData.cries?pokemonData.cries.latest:pokemonData.cries.legacy,
       }
     })
 
     // Update the state with the processed Pokémon data
     setPokemonDataList(pokeapiDataList)
-    // console.log(pokeapiDataList)
+    console.log(pokeapiDataList)
 
     // Determine the range of Pokémon displayed (e.g., "191-210")
     const offsetValue = getOffsetFromUrl(pokeapiUrl)
@@ -92,6 +94,7 @@ function PokemonList() {
             image={pokemon.image}
             name={pokemon.name}
             types={pokemon.types}
+            cries={pokemon.cries}
           />
         )) : 'loading.....'}
       </div>
