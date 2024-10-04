@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import './PokemonCard.css'
-import Btn from '../Buttons/Btn';
+import {Btn} from '../index';
+import { Link } from 'react-router-dom';
 
 function PokemonCard({ id, name, image, types, cries }) {
   // Create a reference to the audio element
@@ -9,9 +10,9 @@ function PokemonCard({ id, name, image, types, cries }) {
   // Function to handle the mouse over event and play audio
   const handleCardClick = () => {
     if (audioRef.current) {
-    audioRef.current.play().catch(error => {
-      console.error('Error playing audio:', error);
-    });
+      audioRef.current.play().catch(error => {
+        console.error('Error playing audio:', error);
+      });
     }
   };
   return (
@@ -21,7 +22,9 @@ function PokemonCard({ id, name, image, types, cries }) {
       </div>
       <h2>{name}</h2>
       <Btn onClick={handleCardClick}>Sound</Btn>
-      <Btn>View Details</Btn>
+      <Link to={`/pokemon/${id}`}>
+        <Btn>View Details</Btn>
+      </Link>
       <audio ref={audioRef} src={cries}>
       </audio>
     </div>

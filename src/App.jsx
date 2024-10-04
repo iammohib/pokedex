@@ -1,12 +1,16 @@
+import { Link } from 'react-router-dom'
 import './App.css'
-import { PokemonList, SearchBar } from './components'
+import { SearchBar } from './components'
+import CustomRoutes from './routes/CustomRoutes'
 
 function App() {
   return (
     <>
-      POKEDEX
+      <Link to={'/'}>
+        POKEDEX
+      </Link>
       <SearchBar />
-      <PokemonList />
+      <CustomRoutes />
     </>
   )
 }

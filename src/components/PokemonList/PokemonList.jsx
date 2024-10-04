@@ -2,8 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import './PokemonList.css'
-import PokemonCard from '../Cards/PokemonCard';
-import Btn from '../Buttons/Btn';
+import { PokemonCard, Btn } from '../index';
 
 function PokemonList() {
   // State variables for API URL, Pokémon data, and navigation controls
@@ -56,7 +55,7 @@ function PokemonList() {
         name: pokemonData.name,
         image: pokemonData.sprites.other.dream_world.front_default,
         types: pokemonData.types,
-        cries: pokemonData.cries?pokemonData.cries.latest:pokemonData.cries.legacy,
+        cries: pokemonData.cries ? pokemonData.cries.latest : null,
       }
     })
 
