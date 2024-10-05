@@ -4,19 +4,21 @@ import './Btn.css'; // Import any styling you want
 
 function Btn({
     children,
-    onClick,
+    onClick = () => { }, // Default no-op function
     type = 'button',
     variant = 'primary',
     size = 'medium',
     disabled = false,
-    className = ''
+    className = '',
+    ...props // Capture any other props for better flexibility
 }) {
     return (
         <button
             className={`btn ${variant} ${size} ${className}`}
-            onClick={onClick}
+            onClick={disabled ? undefined : onClick} // Prevent click when disabled
             type={type}
             disabled={disabled}
+            {...props} // Spread additional props for customization
         >
             {children}
         </button>

@@ -4,44 +4,81 @@ import { useParams } from "react-router-dom"
 import { PokemonDetailsCard } from "../index";
 
 function PokemonDetails() {
-    // Access URL parameters
+    // Access URL parameters (id) using useParams
     const { id } = useParams();
-    const [pokemonDataDetails, setPokemonDataDetails] = useState({})
+
+    // State to store Pokémon details
+    const [pokemonDataDetails, setPokemonDataDetails] = useState({});
+
+    // Loading state to show spinner while data is being fetched
+    const [loading, setLoading] = useState(true);
+
+    // Error state to capture and display errors if any occur
+    const [error, setError] = useState(null);
+
+    // API URL for fetching Pokémon details based on the given ID
     const url = `https://pokeapi.co/api/v2/pokemon/${id}`
 
+    // Function to fetch Pokémon data asynchronously
     const getData = async () => {
-        const response = await axios.get(url)
-        console.log(response.data)
+        setLoading(true); // Start loading
+        setError(null); // Reset error state before fetching
 
-        const pokemonData = {
-            id: id,
-            name: response.data.name,
-            image: response.data.sprites.other.dream_world.front_default,
-            cries: response.data.cries ? response.data.cries.latest : "null",
-            weight: response.data.weight,
-            height: response.data.height,
-            types: response.data.types.map((t) => t.type.name)
+        try {
+            // Perform GET request to the Pokémon API
+            const response = await axios.get(url);
+            // console.log(response.data); // Log response data for debugging
+
+            // Extract necessary Pokémon data from the response
+            const pokemonData = {
+                id: id, // Use the ID from the route parameters
+                name: response.data.name, // Pokémon name
+                image: response.data.sprites.other.dream_world.front_default, // Pokémon image
+                cries: response.data.cries ? response.data.cries.latest : "null", // Pokémon cries if available
+                weight: response.data.weight, // Pokémon weight
+                height: response.data.height, // Pokémon height
+                types: response.data.types.map((t) => t.type.name) // Map Pokémon types to extract type names
+            }
+
+            // Update state with fetched Pokémon details
+            setPokemonDataDetails(pokemonData);
+        } catch (err) {
+            // Log the error to the console and set error message in state
+            console.error("Error fetching Pokémon data:", err);
+            setError("Failed to load Pokémon data."); // Displayable error message
+        } finally {
+            // Stop loading state whether success or failure
+            setLoading(false);
         }
-
-        setPokemonDataDetails(pokemonData)
     }
+
+    // useEffect to fetch data when the component mounts
     useEffect(() => {
-        getData()
-    }, [])
+        getData(); // Trigger the data fetching function
+    }, []); // Empty dependency array ensures it runs only once on mount
 
     return (
         <div>
-            <PokemonDetailsCard
-                id={id}
-                name={pokemonDataDetails.name}
-                image={pokemonDataDetails.image}
-                types={pokemonDataDetails.types}
-                cries={pokemonDataDetails.cries}
-                weight={pokemonDataDetails.weight}
-                height={pokemonDataDetails.height}
-            />
+            {loading ? (
+                // Show loading spinner while data is being fetched
+                <div className="spinner">Loading...</div>
+            ) : error ? (
+                // Show error message if data fetching fails
+                <div className="error">{error}</div>
+            ) : (
+                // Render the PokémonDetailsCard component with fetched data
+                <PokemonDetailsCard
+                    id={id} // Pokémon ID
+                    name={pokemonDataDetails.name} // Pokémon name
+                    image={pokemonDataDetails.image} // Pokémon image URL
+                    types={pokemonDataDetails.types} // Pokémon types
+                    cries={pokemonDataDetails.cries} // Pokémon cries (sound)
+                    weight={pokemonDataDetails.weight} // Pokémon weight
+                    height={pokemonDataDetails.height} // Pokémon height
+                />
+            )}
         </div>
     )
 }
 
-export default PokemonDetails
+export default PokemonDetails;

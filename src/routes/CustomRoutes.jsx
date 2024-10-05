@@ -5,8 +5,8 @@ import { PokemonList, PokemonDetails } from '../components'
 function CustomRoutes() {
   return (
     <Routes>
-        <Route path='/' element={<PokemonList/>}/>
-        <Route path='/pokemon/:id' element={<PokemonDetails/>}/>
+      <Route path='/' element={<PokemonList />} />
+      <Route path='/pokemon/:id' element={<PokemonDetails />} />
     </Routes>
   )
 }

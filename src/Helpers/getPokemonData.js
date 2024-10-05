@@ -31,7 +31,8 @@ const getPokemonData = async (pokemonListState, setPokemonListState) => {
     }));
 
     // Calculate range for display (e.g., "1-20", "21-40", etc.)
-    const offsetValue = parseInt(getQueryParamFromUrl(currentApiUrl, "offset")) || 0;
+    const offsetValue =
+      parseInt(getQueryParamFromUrl(currentApiUrl, "offset")) || 0;
     const range = `${offsetValue + 1}-${offsetValue + pokeapiDataList.length}`;
 
     // Batch update the state once all data is processed
@@ -44,14 +45,13 @@ const getPokemonData = async (pokemonListState, setPokemonListState) => {
       range,
       loading: false, // Set loading to false once data is fully loaded
     }));
-
   } catch (error) {
     // Handle errors and log them
     console.error("Failed to fetch Pokémon data:", error);
     setPokemonListState((prevState) => ({
       ...prevState,
       loading: false, // Stop loading in case of error
-      error: "Failed to fetch Pokémon data. Please try again later."
+      error: "Failed to fetch Pokémon data. Please try again later.",
     }));
   }
 };
