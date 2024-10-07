@@ -8,7 +8,7 @@ function PokemonCard({ id, name, image, cries }) {
   // Create a reference to the audio element
   const audioRef = useRef(null);
 
-  // Function to handle the mouse over event and play audio
+  // Function to handle the mouse click event and play audio
   const handleCardClick = () => {
     if (audioRef.current && cries) {
       // Play audio if it exists and cries prop is provided
