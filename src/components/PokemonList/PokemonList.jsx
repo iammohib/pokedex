@@ -1,38 +1,14 @@
-// Importing React, hooks, and required libraries
-import React, { useEffect, useState } from 'react'
+// Imports
 import './PokemonList.css'
 import { PokemonCard, Btn } from '../index'; // Importing the PokemonCard and Btn components
-import getPokemonData from '../../Helpers/getPokemonData'; // Helper function to fetch Pokémon data
+import usePokemonData from '../../hooks/usePokemonsData'; // Helper function to fetch Pokémon data
 
 function PokemonList() {
-  // Setting up the initial state for the component using useState
-  const [pokemonListState, setPokemonListState] = useState({
-    currentApiUrl: 'https://pokeapi.co/api/v2/pokemon/', // Initial API URL for fetching Pokémon
-    pokemonDataList: [], // Array to store the list of Pokémon
-    count: 0, // Total number of Pokémon
-    prevApiUrl: '', // URL for the previous set of Pokémon
-    nextApiUrl: '', // URL for the next set of Pokémon
-    range: '', // Range of Pokémon displayed
-    loading: true, // Loading state
-    error: null, // Error state
-  });
+  // Using custom hook to retrieve and update Pokémon list state
+  const [pokemonListState, setPokemonListState] = usePokemonData()
 
   // Destructuring state for easier access
-  const { currentApiUrl, count, range, pokemonDataList, loading, prevApiUrl, nextApiUrl, error } = pokemonListState;
-
-  // useEffect hook to fetch data whenever the `currentApiUrl` changes (pagination)
-  useEffect(() => {
-    // Call getPokemonData function to fetch Pokémon data and update the state
-    getPokemonData(pokemonListState, setPokemonListState)
-      .catch(err =>
-        // Handle errors by updating the error state
-        setPokemonListState(prevState => ({
-          ...prevState,
-          loading: false, // Stop loading when an error occurs
-          error: 'Failed to fetch data' // Set the error message
-        }))
-      );
-  }, [currentApiUrl]); // Dependency array includes `currentApiUrl` to trigger data fetching when it changes
+  const { count, range, pokemonDataList, loading, prevApiUrl, nextApiUrl, error } = pokemonListState;
 
   return (
     <div className='PokemonList'>
