@@ -7,7 +7,7 @@ function PokemonDetails() {
     const { id } = useParams();
     
     // Using custom hook to retrieve and update Pokémon list state
-    const [pokemonDataDetails] = usePokemonDetails(20)
+    const [pokemonDataDetails] = usePokemonDetails(id)
     const {name,image,cries,weight,height,types,loading,error} = pokemonDataDetails;
 
     return (
