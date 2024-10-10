@@ -13,6 +13,7 @@ function usePokemonDetails(id) {
     types: [], // Pokémon types
     loading: true, // Loading state
     error: null, // Error state
+    similarPokemonsList: [],
   });
 
   // API URL for fetching Pokémon details based on the given ID
@@ -30,20 +31,60 @@ function usePokemonDetails(id) {
     try {
       // Perform GET request to the Pokémon API
       const { data } = await axios.get(url);
+      const { name, sprites, cries, weight, height, types } = data;
+
+      // Fetching Pokémon data for each type
+      const typesArray = types.map((t) => t.type.name);
+      const typeRequests = await typesArray.map((type) =>
+        axios.get(`https://pokeapi.co/api/v2/type/${type}`)
+      );
+      const typeResponses = await axios.all(typeRequests);
+
+      // Flatten and extract Pokémon data from the responses
+      const pokemonList = typeResponses
+        .map((response) => response.data.pokemon.slice(0, 5))
+        .flat()
+        .map((entry) => entry.pokemon)
+        .filter(
+          (obj, index, self) =>
+            obj.name !== name &&
+            index === self.findIndex((o) => o.name === obj.name)
+        );
+
+      // Fetch detailed Pokémon data
+      const pokemonDetailsPromises = pokemonList.map((pokemon) =>
+        axios.get(pokemon.url)
+      );
+      const pokemonDetailsResults = await Promise.allSettled(
+        pokemonDetailsPromises
+      );
+
+      // Filter and extract fulfilled responses
+      const similarPokemons = await pokemonDetailsResults
+        .filter(({ status }) => status === "fulfilled")
+        .map(({ value: { data: pokemonData } }) => ({
+          id: pokemonData.id,
+          name: pokemonData.name,
+          image:
+            pokemonData.sprites?.other?.dream_world?.front_default ||
+            "default_image_url",
+          types: pokemonData.types,
+          cries: pokemonData.cries?.latest || null,
+        }));
 
       // Update state with fetched Pokémon details
       setPokemonDataDetails({
         id,
-        name: data.name, // Pokémon name
+        name: name, // Pokémon name
         image:
-          data.sprites?.other?.dream_world?.front_default ||
-          "default_image_url", // Handle missing images
-        cries: data.cries?.latest || null, // Handle missing cries
-        weight: data.weight, // Pokémon weight
-        height: data.height, // Pokémon height
-        types: data.types.map((t) => t.type.name), // Map Pokémon types
+          sprites?.other?.dream_world?.front_default || "default_image_url", // Handle missing images
+        cries: cries?.latest || null, // Handle missing cries
+        weight: weight, // Pokémon weight
+        height: height, // Pokémon height
+        types: types.map((t) => t.type.name), // Map Pokémon types
         loading: false, // Data fetched, stop loading
         error: null, // Reset error state
+        similarPokemonsList: similarPokemons, // array of similar Pokemon details
       });
     } catch (err) {
       console.error("Error fetching Pokémon data:", err);
