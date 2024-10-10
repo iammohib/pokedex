@@ -1,12 +1,38 @@
-import React from 'react'
-import './SearchBar.css'
+// src/components/SearchBar.js
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useDebounce from "../../hooks/useDebounce";
+import "./SearchBar.css"
 
-function SearchBar() {
+const SearchBar = () => {
+  const [input, setInput] = useState("");
+  const navigate = useNavigate();
+
+  // Debounce the input with a 200ms delay
+  const debouncedInput = useDebounce(input, 2000);
+
+  // Handle input change
+  const handleChange = (e) => {
+    setInput(e.target.value);
+  };
+
+  // Redirect when debounced input changes
+  React.useEffect(() => {
+    if (debouncedInput) {
+      navigate(`/pokemon/${debouncedInput}`);
+    }
+  }, [debouncedInput, navigate]);
+
   return (
-    <div className='searchBar'>
-      Search Bar
+    <div className="searchBar">
+      <input
+        type="text"
+        value={input}
+        onChange={handleChange}
+        placeholder="Search Pokémon"
+      />
     </div>
-  )
-}
+  );
+};
 
-export default SearchBar
+export default SearchBar;
