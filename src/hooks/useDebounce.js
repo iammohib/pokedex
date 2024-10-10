@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+// Custom hook for debouncing a value
 const useDebounce = (value, delay) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
@@ -8,6 +9,7 @@ const useDebounce = (value, delay) => {
       setDebouncedValue(value);
     }, delay);
 
+    // Cleanup timeout if value or delay changes
     return () => {
       clearTimeout(handler);
     };
