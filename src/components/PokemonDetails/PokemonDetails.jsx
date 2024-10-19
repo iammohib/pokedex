@@ -1,7 +1,7 @@
-import { useParams } from "react-router-dom"
-import { PokemonCard, PokemonDetailsCard } from "../index";
-import usePokemonDetails from "../../hooks/usePokemonDetails";
 import './PokemonDetails.css'
+import { PokemonCard, PokemonDetailsCard } from "../index";
+import { useParams } from "react-router-dom"
+import usePokemonDetails from "../../hooks/usePokemonDetails";
 
 function PokemonDetails() {
     // Access URL parameters (id) using useParams

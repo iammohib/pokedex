@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react'; // Importing necessary React hooks and components
 import './PokemonCard.css'; // Importing the CSS for styling the Pokemon card
+import { useEffect, useRef } from 'react'; // Importing necessary React hooks and components
 import { Btn } from '../index'; // Importing the Btn component from the index file
 import { Link } from 'react-router-dom'; // Importing Link from React Router for navigation
 import PropTypes from 'prop-types'

@@ -1,8 +1,8 @@
 // src/components/SearchBar.js
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import useDebounce from "../../hooks/useDebounce";
 import "./SearchBar.css"
+import React, { useState } from "react";
+import useDebounce from "../../hooks/useDebounce";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
   const [input, setInput] = useState("");

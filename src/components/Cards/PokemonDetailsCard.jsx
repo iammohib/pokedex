@@ -1,8 +1,8 @@
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Btn } from '../index';
 import PropTypes from 'prop-types';
 
-function PokemonDetailsCard({ id, name, image, types, cries, weight, height }) {
+function PokemonDetailsCard({ name, image, types, cries, weight, height }) {
   // Create a reference to the audio element
   const audioRef = useRef(null); // Using useRef to hold the audio element reference
 

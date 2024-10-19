@@ -1,6 +1,6 @@
 // Imports
 import './PokemonList.css'
-import { PokemonCard, Btn } from '../index'; // Importing the PokemonCard and Btn components
+import { Btn, PokemonCard } from '../index'; // Importing the PokemonCard and Btn components
 import usePokemonData from '../../hooks/usePokemonsData'; // Helper function to fetch Pokémon data
 
 function PokemonList() {

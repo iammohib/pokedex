@@ -1,6 +1,5 @@
-import React from 'react'
+import { PokemonDetails, PokemonList } from '../components'
 import { Route, Routes } from 'react-router-dom'
-import { PokemonList, PokemonDetails } from '../components'
 
 function CustomRoutes() {
   return (
